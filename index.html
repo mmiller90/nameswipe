@@ -79,7 +79,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:16px}
 .stack{display:flex;flex-direction:column;gap:14px}
 .lede{margin:4px 0 18px;color:var(--muted);font-size:16px}
 .note{margin-top:auto;padding-top:18px;color:var(--muted);font-size:13px;text-align:center}
-.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:13px;font-weight:700;background:var(--soft)}
+.pill{display:inline-block;white-space:nowrap;padding:2px 10px;border-radius:999px;font-size:13px;font-weight:700;background:var(--soft)}
 .tally{font-size:13px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
 .bar-track{height:8px;border-radius:99px;background:var(--track);overflow:hidden;margin-top:6px}
 .bar-fill{height:100%;border-radius:99px;background:var(--ink);transition:width .3s}
@@ -150,11 +150,19 @@ input.field{width:100%;border:2.5px solid var(--line);border-radius:14px;backgro
 .undo{justify-self:center;display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--card);
   border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}
 .undo[disabled]{opacity:.4;cursor:default}
+.controls.r2{grid-template-columns:auto auto auto;justify-content:space-between;justify-items:center}
+.round.love{color:#E0457B} .round.love.hot{background:#E0457B;color:#fff}
+.undo.row2{margin:12px auto 0;display:flex}
+.stamp.love{left:50%;top:40px;color:#E0457B;transform:translateX(-50%) rotate(-6deg)}
+.card.r2c{container-type:size}
+.nm.r2{display:flex;flex-direction:column;align-items:center;line-height:1.05;
+  font-size:min(76px,calc((100cqw - 56px) * 1.4 / var(--len)),calc((100cqh - 96px) / var(--n) / 1.12))}
+.card.r2c .kind{padding:0 14px}
 .done{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px}
 .done h2{font:800 34px/1.1 var(--display);margin:0}
 
 /* Lists */
-.listhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:6px 0 12px}
+.listhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 10px;margin:6px 0 12px}
 .listhead h2{margin:0;font:800 24px/1.1 var(--display)}
 .names{list-style:none;margin:12px 0 0;padding:0;border:2.5px solid var(--line);border-radius:18px;background:var(--card);
   box-shadow:4px 4px 0 var(--shadow);overflow:hidden}
@@ -165,6 +173,20 @@ input.field{width:100%;border:2.5px solid var(--line);border-radius:14px;backgro
 .unkeep{border:2px solid var(--line);background:var(--soft);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;flex:none}
 .unkeep.armed{background:var(--danger-bg);color:var(--nope);border-color:var(--nope)}
 .heart{color:var(--nope);flex:none}
+.rowact{display:flex;align-items:center;gap:8px;flex:none}
+.lovebtn{width:36px;height:36px;border-radius:999px;border:2px solid var(--line);background:var(--soft);display:grid;place-items:center;color:var(--muted);padding:0}
+.lovebtn[aria-pressed="true"]{background:#E0457B;color:#fff;border-color:#E0457B}
+.names li .lbl{min-width:0;overflow-wrap:anywhere}
+.seg{display:flex;border:2.5px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+.seg button{flex:1;border:0;background:transparent;padding:10px 8px;font-weight:700;font-size:15px}
+.seg button+button{border-left:2px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--sun);color:var(--sun-ink)}
+.msg{margin:10px 0 0;padding:10px 14px;border:2px solid var(--line);border-radius:14px;background:var(--soft);font-weight:600;font-size:15px}
+.msg.ok{background:#D8F5E5} .msg.bad{background:var(--danger-bg)}
+.btn.dashed{justify-content:center;border-style:dashed;box-shadow:none;background:transparent}
+.btn.small{width:auto;padding:8px 14px;font-size:15px;box-shadow:3px 3px 0 var(--shadow)}
+.badge{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:#FFD6E5;color:#A3204F;font-size:12px;font-weight:800;vertical-align:middle}
+.btn .tag{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--sun);color:var(--sun-ink);font-size:12px;font-weight:800;vertical-align:middle}
 .empty{padding:26px 18px;text-align:center;color:var(--muted);font-size:16px}
 .listwrap{flex:1;min-height:0;overflow-y:auto;padding:0 6px 8px 0}
 
@@ -223,6 +245,7 @@ const ICON = {
   check:'<svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M4.5 12.8l4.8 4.7L19.5 7" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   undo:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 010 11H11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   heart:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="currentColor"/></svg>',
+  loveBtn:'<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="currentColor"/></svg>',
   arrow:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 
@@ -260,6 +283,40 @@ const LocalStore = (function(){
     async getMatches(g){
       const a = bucket("michael", g), b = bucket("rebecca", g);
       return Object.keys(a).filter(n => a[n] === 1 && b[n] === 1);
+    },
+    /* Round 2 (preview): the pool is built into the page; votes stay on this device */
+    canAddNames: true,
+    async getPool(){
+      const base = window.POOL_INLINE; if (!base) return null;
+      const d = read(); d.writeins = d.writeins || [];
+      const out = { boy: base.boy.slice(), girl: base.girl.slice() };
+      d.writeins.forEach(w => out[w.gender].push({ id:w.id, names:[w.name], addedBy:w.by }));
+      return out;
+    },
+    async addWriteIn(uid, g, name){
+      const d = read(); d.writeins = d.writeins || [];
+      const id = 100000 + d.writeins.length + 1 + Math.floor(Math.random() * 1000);
+      d.writeins.push({ id, gender:g, name, by:uid }); write(); return id;
+    },
+    async removeWriteIn(uid, g, name){
+      const d = read(); d.writeins = (d.writeins || []).filter(w => !(w.gender === g && w.name === name));
+      Object.keys(d.dec2 || {}).forEach(u => { const b = (d.dec2[u] || {})[g]; if (b) delete b[name]; }); write();
+    },
+    async getVotes2(uid, g){ const d = read(); d.dec2 = d.dec2 || {}; return Object.assign({}, (d.dec2[uid] || {})[g] || {}); },
+    async setVotes2(uid, g, names, vote){
+      const d = read(); d.dec2 = d.dec2 || {}; d.dec2[uid] = d.dec2[uid] || {}; d.dec2[uid][g] = d.dec2[uid][g] || {};
+      names.forEach(n => { d.dec2[uid][g][n] = vote; }); write();
+    },
+    async clearVotes2(uid, g, names){
+      const d = read(); d.dec2 = d.dec2 || {}; const b = ((d.dec2[uid] || {})[g]); if (b) names.forEach(n => { delete b[n]; }); write();
+    },
+    async partnerVote2(uid, g, names){
+      const other = uid === "michael" ? "rebecca" : uid === "rebecca" ? "michael" : null; if (!other) return null;
+      const d = read(); const b = ((d.dec2 || {})[other] || {})[g] || {}; return names[0] in b ? b[names[0]] : null;
+    },
+    async getMatches2(g, pool){
+      const d = read(), dd = d.dec2 || {}, a = (dd.michael || {})[g] || {}, b = (dd.rebecca || {})[g] || {};
+      return pool[g].filter(c => a[c.names[0]] >= 1 && b[c.names[0]] >= 1).map(c => ({ id:c.id, names:c.names, mv:a[c.names[0]], rv:b[c.names[0]] }));
     }
   };
 })();
@@ -336,6 +393,63 @@ function makeSupabaseStore(){
     async getMatches(g){
       const rows = await readAll(() => sb.from("matches").select("name").eq("gender", g).order("name"));
       return rows.map(r => r.name);
+    },
+    /* Round 2: separate tables (r2_pool, decisions_r2, matches_r2). Round 1 tables are never touched. */
+    canAddNames: false,
+    async getPool(){
+      // Newer database has added_by (for write-in names). Fall back if that update hasn't been run yet.
+      let rows;
+      try {
+        rows = await readAll(() => sb.from("r2_pool").select("gender,name,card_id,pos,source,added_by").order("gender").order("card_id").order("pos"));
+        this.canAddNames = true;
+      } catch (e){
+        this.canAddNames = false;
+        rows = await readAll(() => sb.from("r2_pool").select("gender,name,card_id,pos").order("gender").order("card_id").order("pos"));
+      }
+      if (!rows.length) return null;
+      const out = { boy:[], girl:[] }, seen = {};
+      rows.forEach(r => {
+        const key = r.gender + ":" + r.card_id;
+        if (!seen[key]){ seen[key] = { id:r.card_id, names:[] }; if (r.source === "writein") seen[key].addedBy = r.added_by; out[r.gender].push(seen[key]); }
+        seen[key].names.push(r.name);
+      });
+      return out;
+    },
+    addWriteIn(uid, g, name){
+      return queue(async () => {
+        const rows = must(await sb.from("r2_pool").insert({ gender:g, name, pos:0, source:"writein", added_by:uid }).select("card_id"));
+        return rows[0].card_id;
+      });
+    },
+    removeWriteIn(uid, g, name){
+      return queue(async () => {
+        must(await sb.from("decisions_r2").delete().eq("gender", g).eq("name", name));
+        must(await sb.from("r2_pool").delete().eq("gender", g).eq("name", name).eq("source", "writein"));
+      });
+    },
+    async getVotes2(uid, g){
+      const rows = await readAll(() => sb.from("decisions_r2").select("name,vote").eq("user_id", uid).eq("gender", g).order("name"));
+      const out = {}; rows.forEach(r => { out[r.name] = r.vote; }); return out;
+    },
+    setVotes2(uid, g, names, vote){
+      const rows = names.map(name => ({ user_id:uid, gender:g, name, vote }));
+      return queue(async () => must(await sb.from("decisions_r2").upsert(rows, { onConflict:"user_id,gender,name" })));
+    },
+    clearVotes2(uid, g, names){
+      return queue(async () => must(await sb.from("decisions_r2").delete().eq("user_id", uid).eq("gender", g).in("name", names)));
+    },
+    async partnerVote2(uid, g, names){
+      const other = uid === "michael" ? "rebecca" : uid === "rebecca" ? "michael" : null;
+      if (!other) return null;
+      const rows = must(await sb.from("decisions_r2").select("vote").eq("user_id", other).eq("gender", g).eq("name", names[0]));
+      return rows.length ? rows[0].vote : null;
+    },
+    async getMatches2(g, pool){
+      const rows = await readAll(() => sb.from("matches_r2").select("card_id,name,michael_vote,rebecca_vote").eq("gender", g).order("card_id"));
+      const byId = {}; (pool[g] || []).forEach(c => { byId[c.id] = c; });
+      const seen = {}, out = [];
+      rows.forEach(r => { if (!seen[r.card_id] && byId[r.card_id]){ seen[r.card_id] = 1; out.push({ id:r.card_id, names:byId[r.card_id].names, mv:r.michael_vote, rv:r.rebecca_vote }); } });
+      return out;
     }
   };
 }
@@ -343,8 +457,8 @@ const Store = (CFG.supabaseUrl && CFG.supabaseKey && window.supabase) ? makeSupa
 let NAMES = window.NAMES_INLINE || null;
 
 /* ---------- App state ---------- */
-const S = { screen:"password", user:null, gender:null, dec:{boy:{},girl:{}}, queue:[], history:[], users:[] };
-const PARENT = { users:"password", gender:"users", menu:"gender", sort:"menu", review:"menu", matches:"menu" };
+const S = { screen:"password", user:null, gender:null, dec:{boy:{},girl:{}}, queue:[], history:[], users:[], pool:null, dec2:{boy:{},girl:{}} };
+const PARENT = { users:"password", gender:"users", menu:"gender", sort:"menu", review:"menu", matches:"menu", r2menu:"menu", r2sort:"r2menu", r2review:"r2menu", r2matches:"r2menu", r2add:"r2menu" };
 const view = $("#view");
 const collator = new Intl.Collator("en", {sensitivity:"base"});
 const byName = (a, b) => collator.compare(a, b);
@@ -353,6 +467,25 @@ const total = g => NAMES[g].length;
 const left = g => NAMES[g].filter(n => !(n in S.dec[g])).length;
 const keptList = g => Object.keys(S.dec[g]).filter(n => S.dec[g][n] === 1).sort(byName);
 const inPair = () => S.user && PAIR.includes(S.user.id);
+/* Write-in helpers */
+function cleanName(raw){
+  let n = String(raw || "").trim().replace(/\s+/g, " ").replace(/[\u2019\u2018]/g, "'");
+  if (!/^[A-Za-z\u00C0-\u00FF][A-Za-z\u00C0-\u00FF'\- ]{1,23}$/.test(n)) return "";
+  if (n === n.toLowerCase() || n === n.toUpperCase()) n = n.toLowerCase().replace(/(^|[ \-'])([a-z\u00e0-\u00ff])/g, (m, a, b) => a + b.toUpperCase());
+  return n;
+}
+function lev(a, b){
+  const m = a.length, n = b.length, d = Array.from({ length:m + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[m][n];
+}
+const isR2 = () => S.screen === "r2sort";
+const cards2 = g => (S.pool && S.pool[g]) || [];
+const cardLabel = c => c.names.join(" / ");
+const voteOf = (g, c) => S.dec2[g][c.names[0]];
+const left2 = g => cards2(g).filter(c => !(c.names[0] in S.dec2[g])).length;
+const keptCards = g => cards2(g).filter(c => voteOf(g, c) >= 1).sort((a, b) => (voteOf(g, b) - voteOf(g, a)) || byName(a.names[0], b.names[0]));
 const partnerName = () => S.user.id === "michael" ? "Rebecca" : "Michael";
 
 /* Seeded shuffle: each person gets their own stable random order */
@@ -384,7 +517,7 @@ function setBar(title){
 let renderSeq = 0;
 function show(screen){
   S.screen = screen;
-  if (screen !== "sort") S.history = [];
+  if (screen !== "sort" && screen !== "r2sort") S.history = [];
   endCelebrate();
   const my = ++renderSeq, stale = () => my !== renderSeq;
   view.innerHTML = `<div class="empty" style="margin:auto">Loading…</div>`;
@@ -485,9 +618,10 @@ const SCREENS = {
 
   async gender(stale){
     setBar("Hi, " + S.user.name);
-    const [boy, girl] = await Promise.all([Store.getDecisions(S.user.id, "boy"), Store.getDecisions(S.user.id, "girl")]);
+    const [boy, girl, pool] = await Promise.all([Store.getDecisions(S.user.id, "boy"), Store.getDecisions(S.user.id, "girl"),
+      (Store.getPool ? Store.getPool() : Promise.resolve(null)).catch(() => null)]);
     if (stale()) return;
-    S.dec.boy = boy; S.dec.girl = girl;
+    S.dec.boy = boy; S.dec.girl = girl; S.pool = pool;
     view.innerHTML = `
       <p class="lede">Which list do you want to work on?</p>
       <div class="tiles">
@@ -505,8 +639,11 @@ const SCREENS = {
     const g = S.gender;
     setBar(G[g].label);
     const L = left(g), T = total(g), kept = keptList(g).length;
-    let matches = null;
+    let matches = null, r2left = null;
     if (inPair()) matches = (await Store.getMatches(g)).length;
+    if (S.pool && cards2(g).length){
+      try { S.dec2[g] = await Store.getVotes2(S.user.id, g); r2left = left2(g); } catch (e){ r2left = null; }
+    }
     if (stale()) return;
     view.innerHTML = `
       <div style="margin:4px 0 20px">
@@ -517,10 +654,219 @@ const SCREENS = {
         <button class="btn primary" type="button" id="goSort" ${L ? "" : "disabled"}>${L ? "Sort new names" : "All names sorted"}</button>
         <button class="btn" type="button" id="goReview">Review my choices <small>${fmt(kept)} kept</small></button>
         ${matches === null ? "" : `<button class="btn" type="button" id="goMatches">Our matches <small>${fmt(matches)} ${matches === 1 ? "name" : "names"}</small></button>`}
+        ${r2left === null ? "" : `<button class="btn" type="button" id="goR2"><span>Round 2<span class="tag">NEW</span></span> <small>${r2left ? fmt(r2left) + " cards left" : "all sorted"}</small></button>`}
       </div>`;
     $("#goSort").addEventListener("click", () => go("sort"));
     $("#goReview").addEventListener("click", () => go("review"));
     const gm = $("#goMatches"); if (gm) gm.addEventListener("click", () => go("matches"));
+    const g2 = $("#goR2"); if (g2) g2.addEventListener("click", () => go("r2menu"));
+  },
+
+  /* ----- Round 2 screens ----- */
+  async r2menu(stale){
+    const g = S.gender;
+    setBar("Round 2 · " + G[g].label);
+    S.dec2[g] = await Store.getVotes2(S.user.id, g);
+    let matches = null;
+    if (inPair()) matches = (await Store.getMatches2(g, S.pool)).length;
+    if (stale()) return;
+    const T = cards2(g).length, L = left2(g), kept = keptCards(g).length;
+    view.innerHTML = `
+      <div style="margin:4px 0 20px">
+        <div class="tally">${fmt(L)} cards left of ${fmt(T)}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${T ? ((T-L)/T*100).toFixed(1) : 0}%;background:${G[g].color}"></div></div>
+        <p class="lede" style="margin:12px 0 0;font-size:14px">Swipe right to keep, left to pass, up (or tap the heart) to love. Names that are spelling variants or nicknames share a card, and one vote covers the whole card.</p>
+      </div>
+      <div class="stack">
+        <button class="btn primary" type="button" id="goSort2" ${L ? "" : "disabled"}>${L ? "Sort Round 2 names" : "All names sorted"}</button>
+        <button class="btn" type="button" id="goReview2">Review my choices <small>${fmt(kept)} kept</small></button>
+        ${matches === null ? "" : `<button class="btn" type="button" id="goMatches2">Our Round 2 matches <small>${fmt(matches)} ${matches === 1 ? "card" : "cards"}</small></button>`}
+        ${Store.canAddNames ? `<button class="btn dashed" type="button" id="goAdd">+ Add a name</button>` : ""}
+      </div>`;
+    $("#goSort2").addEventListener("click", () => go("r2sort"));
+    $("#goReview2").addEventListener("click", () => go("r2review"));
+    const m2 = $("#goMatches2"); if (m2) m2.addEventListener("click", () => go("r2matches"));
+    const ga = $("#goAdd"); if (ga) ga.addEventListener("click", () => go("r2add"));
+  },
+
+  r2add(){
+    setBar("Add a name");
+    let target = S.gender;   // "boy" | "girl" | "both"
+    const mine = () => ["boy", "girl"].flatMap(g => cards2(g).filter(c => c.addedBy === S.user.id).map(c => ({ g, c })));
+    view.innerHTML = `
+      <div class="scroll" style="flex:1;display:flex;flex-direction:column">
+        <p class="lede" style="margin-bottom:12px">Write in a name that isn't on the list. It joins Round 2 as a regular card for both of you, and it counts as a keep for you.</p>
+        <div class="seg" id="tgt" role="group" aria-label="Which list">
+          <button type="button" data-t="boy">Boy name</button><button type="button" data-t="girl">Girl name</button><button type="button" data-t="both">Both</button>
+        </div>
+        <form class="addform" id="wiForm" style="margin-top:12px">
+          <input class="field" id="wiName" maxlength="24" placeholder="Type a name" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Name to add">
+          <button class="btn primary" type="submit">Add</button>
+        </form>
+        <div id="wiMsg" role="status" aria-live="polite"></div>
+        <div id="wiMine"></div>
+        <p class="note">${esc(partnerName())} will see it as a regular card, with no hint of who added it.</p>
+      </div>`;
+    const setTarget = t => { target = t; view.querySelectorAll("#tgt button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === t))); };
+    setTarget(target);
+    view.querySelectorAll("#tgt button").forEach(b => b.addEventListener("click", () => setTarget(b.dataset.t)));
+    const say = (txt, kind, extra) => { $("#wiMsg").innerHTML = txt ? `<div class="msg ${kind || ""}">${txt}${extra || ""}</div>` : ""; };
+    const drawMine = () => {
+      const m = mine();
+      $("#wiMine").innerHTML = m.length ? `
+        <div class="listhead" style="margin-top:22px"><h2 style="font-size:20px">Names you added</h2></div>
+        <ul class="names" style="margin-top:0">${m.map(({ g, c }) => `<li><span class="lbl">${esc(c.names[0])} <small class="muted" style="color:var(--muted);font-size:14px">${g === "boy" ? "boy" : "girl"}</small></span>
+          <button class="unkeep" type="button" data-g="${g}" data-n="${esc(c.names[0])}">Remove</button></li>`).join("")}</ul>` : "";
+    };
+    drawMine();
+    $("#wiMine").addEventListener("click", async e => {
+      const b = e.target.closest(".unkeep"); if (!b) return;
+      if (!b.classList.contains("armed")){
+        b.classList.add("armed"); b.textContent = "Tap to confirm";
+        clearTimeout(b._t); b._t = setTimeout(() => { b.classList.remove("armed"); b.textContent = "Remove"; }, 3500);
+        return;
+      }
+      b.disabled = true;
+      try {
+        await Store.removeWriteIn(S.user.id, b.dataset.g, b.dataset.n);
+        S.pool[b.dataset.g] = cards2(b.dataset.g).filter(c => !(c.addedBy === S.user.id && c.names[0] === b.dataset.n));
+        delete S.dec2[b.dataset.g][b.dataset.n];
+        say("Removed " + esc(b.dataset.n) + ".", "ok"); drawMine();
+      } catch (err){ b.disabled = false; say("Couldn't remove that. Check your connection and try again.", "bad"); }
+    });
+    let ignoreNear = false;
+    const doAdd = async () => {
+      const raw = $("#wiName").value;
+      const name = cleanName(raw);
+      if (!name){ say("Use letters only (spaces, hyphens and apostrophes are fine), 2 to 24 characters.", "bad"); return; }
+      const lists = target === "both" ? ["boy", "girl"] : [target];
+      const added = [], skipped = [], near = [];
+      for (const g of lists){
+        const pool = cards2(g), low = name.toLowerCase();
+        const hit = pool.find(c => c.names.some(n => n.toLowerCase() === low));
+        if (hit){ skipped.push(`${esc(name)} is already a ${G[g].one} card${hit.names.length > 1 ? " (" + esc(hit.names.join(" / ")) + ")" : ""}.`); continue; }
+        if (!ignoreNear){
+          const close = pool.find(c => c.names.some(n => n[0].toLowerCase() === low[0] && lev(n.toLowerCase(), low) === 1));
+          if (close){ near.push(`${esc(name)} looks close to ${esc(close.names.join(" / "))}, which is already a ${G[g].one} card.`); continue; }
+        }
+        added.push(g);
+      }
+      if (near.length && !added.length){
+        say(near.concat(skipped).join(" "), "", ` <button class="btn small" type="button" id="wiAnyway" style="margin-top:8px">Add it anyway</button>`);
+        $("#wiAnyway").addEventListener("click", () => { ignoreNear = true; doAdd(); });
+        return;
+      }
+      if (!added.length){ say(skipped.join(" "), "bad"); return; }
+      const btn = $("#wiForm button"); btn.disabled = true;
+      try {
+        for (const g of added){
+          const id = await Store.addWriteIn(S.user.id, g, name);
+          S.pool[g] = cards2(g).concat([{ id, names:[name], addedBy:S.user.id }]);
+          S.dec2[g][name] = 1;
+          await Store.setVotes2(S.user.id, g, [name], 1);
+        }
+        const where = added.length === 2 ? "boy names and girl names" : G[added[0]].one + "s";
+        say(`Added ${esc(name)} to ${where} and kept it.` + (skipped.length ? " " + skipped.join(" ") : ""), "ok");
+        $("#wiName").value = ""; ignoreNear = false; drawMine();
+      } catch (err){
+        console.error(err);
+        const dup = err && (err.code === "23505");
+        say(dup ? esc(name) + " is already on the list." : "Couldn't add that name. If this keeps happening, the database update for adding names may not have been run yet.", "bad");
+      }
+      btn.disabled = false;
+    };
+    $("#wiForm").addEventListener("submit", e => { e.preventDefault(); ignoreNear = false; doAdd(); });
+    $("#wiName").addEventListener("input", () => { ignoreNear = false; });
+  },
+
+  r2sort(){
+    const g = S.gender;
+    setBar("Round 2 · " + G[g].label);
+    S.queue = shuffled(cards2(g), S.user.id + ":" + g + ":r2").filter(c => !(c.names[0] in S.dec2[g]));
+    S.history = [];
+    view.innerHTML = `
+      <div class="sort">
+        <div>
+          <div class="tally" id="sortTally"></div>
+          <div class="bar-track"><div class="bar-fill" id="sortBar" style="background:${G[g].color}"></div></div>
+        </div>
+        <div class="deck" id="deck" style="--c:${G[g].color}"></div>
+        <div id="controls">
+          <div class="controls r2">
+            <button class="round nope" type="button" id="btnNope" aria-label="Pass">${ICON.x}</button>
+            <button class="round love" type="button" id="btnLove" aria-label="Love">${ICON.loveBtn}</button>
+            <button class="round keep" type="button" id="btnKeep" aria-label="Keep">${ICON.check}</button>
+          </div>
+          <button class="undo row2" type="button" id="btnUndo" disabled>${ICON.undo}Undo</button>
+        </div>
+      </div>`;
+    $("#btnNope").addEventListener("click", () => fly(0));
+    $("#btnKeep").addEventListener("click", () => fly(1));
+    $("#btnLove").addEventListener("click", () => fly(2));
+    $("#btnUndo").addEventListener("click", undo);
+    renderDeck("enter");
+    updateTally();
+  },
+
+  r2review(){
+    const g = S.gender;
+    setBar("My " + G[g].label.toLowerCase());
+    view.innerHTML = `
+      <div class="listhead"><h2>Round 2 keeps</h2><span class="pill" id="keptCount"></span></div>
+      <input class="field" id="q" type="search" placeholder="Search my kept names" autocomplete="off" aria-label="Search kept names">
+      <div class="listwrap"><ul class="names" id="list"></ul></div>`;
+    const draw = () => {
+      const all = keptCards(g), q = $("#q").value.trim().toLowerCase();
+      const rows = q ? all.filter(c => cardLabel(c).toLowerCase().includes(q)) : all;
+      const loved = all.filter(c => voteOf(g, c) === 2).length;
+      $("#keptCount").textContent = fmt(all.length) + " kept · " + fmt(loved) + " loved";
+      $("#list").innerHTML = rows.length
+        ? rows.map(c => `<li><span class="lbl">${esc(cardLabel(c))}</span><span class="rowact">
+            <button class="lovebtn" type="button" data-id="${c.id}" aria-pressed="${voteOf(g, c) === 2}" aria-label="Love ${esc(cardLabel(c))}">${ICON.heart}</button>
+            <button class="unkeep" type="button" data-id="${c.id}">Un-keep</button></span></li>`).join("")
+        : `<li class="empty">${all.length ? "No kept names match that search." : "Nothing kept yet. Swipe right on names you like and they'll show up here."}</li>`;
+    };
+    const cardById = id => cards2(g).find(c => String(c.id) === String(id));
+    $("#q").addEventListener("input", draw);
+    $("#list").addEventListener("click", e => {
+      const lb = e.target.closest(".lovebtn");
+      if (lb){
+        const c = cardById(lb.dataset.id), nv = voteOf(g, c) === 2 ? 1 : 2;
+        c.names.forEach(n => { S.dec2[g][n] = nv; });
+        Store.setVotes2(S.user.id, g, c.names, nv).catch(saveFailed);
+        draw(); return;
+      }
+      const b = e.target.closest(".unkeep"); if (!b) return;
+      const c = cardById(b.dataset.id);
+      if (!b.classList.contains("armed")){
+        view.querySelectorAll(".unkeep.armed").forEach(x => { x.classList.remove("armed"); x.textContent = "Un-keep"; });
+        b.classList.add("armed"); b.textContent = "Tap to confirm";
+        clearTimeout(b._t); b._t = setTimeout(() => { b.classList.remove("armed"); b.textContent = "Un-keep"; }, 3500);
+        return;
+      }
+      c.names.forEach(n => { S.dec2[g][n] = 0; });
+      Store.setVotes2(S.user.id, g, c.names, 0).catch(saveFailed);
+      b.closest("li").classList.add("gone");
+      setTimeout(draw, 250);
+      toast(cardLabel(c) + " moved to pass");
+    });
+    draw();
+  },
+
+  async r2matches(stale){
+    const g = S.gender;
+    setBar("Our " + G[g].label.toLowerCase());
+    const list = (await Store.getMatches2(g, S.pool)).sort((a, b) => ((b.mv === 2 && b.rv === 2) - (a.mv === 2 && a.rv === 2)) || byName(a.names[0], b.names[0]));
+    if (stale()) return;
+    const both = list.filter(m => m.mv === 2 && m.rv === 2).length;
+    view.innerHTML = `
+      <div class="listhead"><h2>We both kept</h2><span class="pill">${fmt(list.length)} ${list.length === 1 ? "match" : "matches"}${both ? " · " + fmt(both) + " loved by both" : ""}</span></div>
+      <div class="listwrap"><ul class="names">
+        ${list.length
+          ? list.map(m => `<li><span class="lbl">${esc(m.names.join(" / "))}${m.mv === 2 && m.rv === 2 ? `<span class="badge">Both love</span>` : ""}</span><span class="heart">${ICON.heart}</span></li>`).join("")
+          : `<li class="empty">No Round 2 matches yet. When you and ${esc(partnerName())} both keep a ${G[g].one}, it shows up here.</li>`}
+      </ul></div>`;
+    if (list.length) celebrate(null);
   },
 
   sort(){
@@ -600,14 +946,21 @@ const SCREENS = {
 
 /* ---------- Swiping ---------- */
 function updateTally(){
-  const g = S.gender, L = S.queue.length, T = total(g);
+  const g = S.gender, L = S.queue.length, T = isR2() ? cards2(g).length : total(g);
   const t = $("#sortTally"); if (!t) return;
-  t.textContent = `${fmt(L)} left of ${fmt(T)} · ${fmt(L)}/${fmt(T)}`;
+  t.textContent = isR2() ? `${fmt(L)} cards left of ${fmt(T)}` : `${fmt(L)} left of ${fmt(T)} · ${fmt(L)}/${fmt(T)}`;
   $("#sortBar").style.width = (T ? (T-L)/T*100 : 0).toFixed(1) + "%";
   $("#btnUndo").disabled = !S.history.length;
 }
 
 function cardHTML(name, cls){
+  if (isR2()){
+    const names = name.names, n = names.length;
+    return `<div class="card r2c ${cls}" data-id="${name.id}">
+    <span class="stamp keep" aria-hidden="true">KEEP</span><span class="stamp nope" aria-hidden="true">NOPE</span><span class="stamp love" aria-hidden="true">LOVE</span>
+    <span class="nm r2" style="--len:${Math.max(4, ...names.map(x => x.length))};--n:${n}">${names.map(x => `<span>${esc(x)}</span>`).join("")}</span>
+    <span class="kind">${n > 1 ? "one vote covers all " + n + " names" : G[S.gender].one}</span></div>`;
+  }
   return `<div class="card ${cls}" data-name="${esc(name)}">
     <span class="stamp keep" aria-hidden="true">KEEP</span><span class="stamp nope" aria-hidden="true">NOPE</span>
     <span class="nm" style="--len:${Math.max(4, name.length)}">${esc(name)}</span>
@@ -620,13 +973,13 @@ function renderDeck(anim){
   const [a, b] = S.queue;
   if (!a){
     $("#controls").hidden = true;
-    const kept = keptList(S.gender).length;
+    const kept = isR2() ? keptCards(S.gender).length : keptList(S.gender).length;
     deck.insertAdjacentHTML("beforeend", `<div class="done">
-      <h2>All sorted!</h2><p class="lede" style="margin:0">You've been through every ${G[S.gender].one}. You kept ${fmt(kept)}.</p>
+      <h2>All sorted!</h2><p class="lede" style="margin:0">${isR2() ? `You've been through every Round 2 card. You kept ${fmt(kept)}.` : `You've been through every ${G[S.gender].one}. You kept ${fmt(kept)}.`}</p>
       <button class="btn primary" type="button" id="doneReview" style="width:auto">See my kept names</button>
       ${S.history.length ? `<button class="undo" type="button" id="doneUndo">${ICON.undo}Undo</button>` : ""}</div>`);
     const du = $("#doneUndo"); if (du) du.addEventListener("click", undo);
-    $("#doneReview").addEventListener("click", () => { show("menu"); go("review"); });
+    $("#doneReview").addEventListener("click", () => { if (isR2()){ show("r2menu"); go("r2review"); } else { show("menu"); go("review"); } });
     return;
   }
   $("#controls").hidden = false;
@@ -635,14 +988,15 @@ function renderDeck(anim){
   bindDrag(deck.querySelector(".card.top"));
 }
 
-function setHot(dx){
+function setHot(dx, dy){
   $("#btnKeep").classList.toggle("hot", dx > 60);
   $("#btnNope").classList.toggle("hot", dx < -60);
+  const lv = $("#btnLove"); if (lv) lv.classList.toggle("hot", (dy || 0) < -80 && Math.abs(dx) < 60);
 }
 
 function bindDrag(el){
   let sx = 0, sy = 0, dx = 0, dy = 0, t0 = 0, down = false;
-  const keep = el.querySelector(".stamp.keep"), nope = el.querySelector(".stamp.nope");
+  const keep = el.querySelector(".stamp.keep"), nope = el.querySelector(".stamp.nope"), love = el.querySelector(".stamp.love");
   el.addEventListener("pointerdown", e => {
     if (e.button !== undefined && e.button !== 0) return;
     down = true; sx = e.clientX; sy = e.clientY; dx = dy = 0; t0 = performance.now();
@@ -653,15 +1007,19 @@ function bindDrag(el){
     if (!down) return;
     dx = e.clientX - sx; dy = e.clientY - sy;
     el.style.transform = `translate(${dx}px, ${dy * 0.35}px) rotate(${dx / 18}deg)`;
-    keep.style.opacity = Math.max(0, Math.min(1, dx / 90));
-    nope.style.opacity = Math.max(0, Math.min(1, -dx / 90));
-    setHot(dx);
+    const up = love && dy < -30 && -dy > Math.abs(dx);
+    keep.style.opacity = up ? 0 : Math.max(0, Math.min(1, dx / 90));
+    nope.style.opacity = up ? 0 : Math.max(0, Math.min(1, -dx / 90));
+    if (love) love.style.opacity = up ? Math.max(0, Math.min(1, -dy / 100)) : 0;
+    setHot(dx, up ? dy : 0);
   });
   const end = () => {
     if (!down) return; down = false;
     const v = Math.abs(dx) / Math.max(1, performance.now() - t0);
-    if (Math.abs(dx) > 100 || (v > 0.6 && Math.abs(dx) > 40)) fly(dx > 0 ? 1 : 0, dy);
-    else { el.style.transition = ""; el.style.transform = ""; keep.style.opacity = nope.style.opacity = 0; setHot(0); }
+    const vy = Math.abs(dy) / Math.max(1, performance.now() - t0);
+    if (love && -dy > 110 && -dy > Math.abs(dx) * 1.2 || love && vy > 0.6 && dy < -50 && -dy > Math.abs(dx)) fly(2);
+    else if (Math.abs(dx) > 100 || (v > 0.6 && Math.abs(dx) > 40)) fly(dx > 0 ? 1 : 0, dy);
+    else { el.style.transition = ""; el.style.transform = ""; keep.style.opacity = nope.style.opacity = 0; if (love) love.style.opacity = 0; setHot(0); }
   };
   el.addEventListener("pointerup", end);
   el.addEventListener("pointercancel", end);
@@ -670,10 +1028,12 @@ function bindDrag(el){
 function fly(val, dy){
   const el = $("#deck .card.top"); if (!el) return;
   el.classList.remove("top","enter","return-l","return-r"); el.classList.add("flying");
-  el.querySelector(val ? ".stamp.keep" : ".stamp.nope").style.opacity = 1;
+  el.querySelector(val === 2 ? ".stamp.love" : val ? ".stamp.keep" : ".stamp.nope").style.opacity = 1;
   const dir = val ? 1 : -1;
   requestAnimationFrame(() => {
-    el.style.transform = `translate(${dir * (window.innerWidth + 200)}px, ${(dy || 0) * 0.35 + 60}px) rotate(${dir * 28}deg)`;
+    el.style.transform = val === 2
+      ? `translate(0px, ${-(window.innerHeight + 200)}px) rotate(-6deg)`
+      : `translate(${dir * (window.innerWidth + 200)}px, ${(dy || 0) * 0.35 + 60}px) rotate(${dir * 28}deg)`;
     el.style.opacity = "0.9";
   });
   setTimeout(() => el.remove(), 420);
@@ -681,7 +1041,24 @@ function fly(val, dy){
   decide(val);
 }
 
+function decide2(val){
+  const g = S.gender, uid = S.user.id, card = S.queue.shift();
+  if (card === undefined) return;
+  card.names.forEach(n => { S.dec2[g][n] = val; });
+  S.history.push({ card, val });
+  Store.setVotes2(uid, g, card.names, val).catch(saveFailed);
+  renderDeck();
+  updateTally();
+  if (val >= 1) Store.partnerVote2(uid, g, card.names).then(pv => {
+    if (pv >= 1 && S.screen === "r2sort"){
+      const lab = esc(cardLabel(card));
+      celebrate(val === 2 && pv === 2 ? `<b>You both love it!</b>${lab}` : `<b>It's a match!</b>You and ${esc(partnerName())} both kept ${lab}.`);
+    }
+  }).catch(() => {});
+}
+
 function decide(val){
+  if (isR2()) return decide2(val);
   const g = S.gender, uid = S.user.id, name = S.queue.shift();
   if (name === undefined) return;
   S.dec[g][name] = val;
@@ -697,6 +1074,15 @@ function decide(val){
 function undo(){
   const step = S.history.pop();
   if (!step) return;
+  if (isR2()){
+    const g = S.gender, { card, val } = step;
+    card.names.forEach(n => { delete S.dec2[g][n]; });
+    S.queue.unshift(card);
+    Store.clearVotes2(S.user.id, g, card.names).catch(saveFailed);
+    renderDeck(val === 2 ? "return-l" : val ? "return-r" : "return-l");
+    updateTally();
+    return;
+  }
   const g = S.gender, { name, val } = step;
   delete S.dec[g][name];
   S.queue.unshift(name);
@@ -706,9 +1092,10 @@ function undo(){
 }
 
 document.addEventListener("keydown", e => {
-  if (S.screen !== "sort" || e.target.matches("input")) return;
+  if ((S.screen !== "sort" && S.screen !== "r2sort") || e.target.matches("input")) return;
   if (e.key === "ArrowLeft"){ e.preventDefault(); fly(0); }
   else if (e.key === "ArrowRight"){ e.preventDefault(); fly(1); }
+  else if (e.key === "ArrowUp" && S.screen === "r2sort"){ e.preventDefault(); fly(2); }
   else if (e.key.toLowerCase() === "z" || e.key === "Backspace"){ e.preventDefault(); undo(); }
 });
 
